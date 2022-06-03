@@ -1,69 +1,34 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Res,
-  HttpCode,
-  BadRequestException,
-  Header,
-  Redirect,
-  Query,
-} from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { UserInfo } from 'os';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { GetUserDto } from './dto/get-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
+
+const { log } = console;
+const { stringify } = JSON;
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
+  // curl -v -X POST http://localhost:3000/users -H "Content-type: application/json" -d '{"name":"daegon", "email":"hello@asd.com", "password":"123"}'
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    const { name, email } = createUserDto;
-    console.log(`${name}의 유저가 ${email}의 이메일을 가지고 등록했습니다.`);
-    // return this.usersService.create(createUserDto);
+  async createUser(@Body() dto: CreateUserDto): Promise<void> {
+    log(`Post create user: ${dto.email}, ${dto.name}, ${dto.password}`);
+    return;
   }
-
-  @Get()
-  findAll(@Query() query: GetUserDto) {
-    const users = this.usersService.findAll();
-    return `쿼리 파라미터 ${query.limit}, ${query.offset}, 결과: ${users}`;
+  // curl -v -X POST http://localhost:3000/users/email-verify\?signupVerifyToken\=test-token
+  @Post('/email-verify')
+  async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string> {
+    log(`Post verify email: ${stringify(dto)}`);
+    return;
   }
-
-  @Redirect('https://nestjs.com', 301)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    if (+id > 1) throw new BadRequestException('id는 0보다 커야한다.');
-    return this.usersService.findOne(+id);
+  @Post('/login')
+  async login(@Body() dto: UserLoginDto): Promise<string> {
+    log(dto);
+    return;
   }
-
-  @HttpCode(202)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  // Two ways route parameters
-  // @Delete(':userId/memo/:memoId')
-  // deleteUserMemo(@Param() params: { [key: string]: string }) {
-  //   return `userId: ${params.userId}, memoId: ${params.memoId}`;
-  // }
-
-  @Delete(':userid/memo/:memoId')
-  deleteUserMemo(
-    @Param('userId') userId: string,
-    @Param('memoId') memoId: string,
-  ) {
-    return `userId: ${userId}, memoId: ${memoId}`;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
+  //   @Get('/:id')
+  //   async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
+  //     log(userId);
+  //     return;
+  //   }
 }
