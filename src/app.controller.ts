@@ -5,7 +5,10 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
+  @Get()
+  getHello(@Req() req: Request): string {
+    return 'hello world!';
+  }
   @Get('/hel*')
   getHello2(@Req() req: Request): string {
     console.log(req);
