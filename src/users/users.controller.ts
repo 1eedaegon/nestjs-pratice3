@@ -15,7 +15,7 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { email, name, password } = dto;
-    await this.usersService.createUser(email, name, password);
+    await this.usersService.createUser(name, email, password);
   }
   // curl -v -X POST http://localhost:3000/users/email-verify\?signupVerifyToken\=test-token
   @Post('/email-verify')

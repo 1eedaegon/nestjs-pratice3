@@ -17,6 +17,7 @@ export class UsersService {
     // TODO
     // 1. DB에서 signupVerifyToken으로 회원가입 처리중인 유저가 있는 지 조회하고 없으면 에러
     // 2. 바로 로그인 상태가 되도록 jwt 발급
+    console.log('[verifyEmail] signupVerifyToken', signupVerifyToken);
     throw new Error('Method not implemented');
   }
   async login(email: string, password: string): Promise<string> {
