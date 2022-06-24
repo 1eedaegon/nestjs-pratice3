@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
@@ -31,7 +41,21 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
+  async getUserInfo(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
+  ): Promise<UserInfo> {
     return this.usersService.getUserInfo(userId);
+  }
+  @Get()
+  async findAll(
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    console.log(offset, limit);
+    return this.usersService.findAll(offset, limit);
   }
 }
