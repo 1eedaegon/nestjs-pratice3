@@ -4,7 +4,7 @@ import { EmailService } from 'src/email/email.service';
 import { UserInfo } from './user-info';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { ulid } from 'ulid';
 
 @Injectable()
@@ -13,6 +13,7 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private readonly emailService: EmailService,
+    private connection: Connection,
   ) {}
   async createUser(name: string, email: string, password: string) {
     await this.checkUserExists(email);
@@ -50,6 +51,37 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ email: emailAddress });
     return user !== undefined;
   }
+
+  private async saveUserUsingQueryRunner(
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ) {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const user = new UserEntity();
+      user.id = ulid();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signupVerifyToken = signupVerifyToken;
+
+      // Upsert using query runner
+      await queryRunner.manager.save(user);
+      // Commit
+      await queryRunner.commitTransaction();
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      // Deallocate transaction
+      await queryRunner.release();
+    }
+  }
+
   private async saveUser(
     name: string,
     email: string,
