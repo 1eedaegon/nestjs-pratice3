@@ -6,8 +6,8 @@
 - [x] Module
 - [x] @Nestjs/config
 - [x] Pipe
-- [ ] TypeORM
-- [ ] Middleware
+- [x] TypeORM
+- [x] Middleware
 - [ ] Guard
 - [ ] Reflections
 - [ ] Logging
@@ -18,4 +18,4 @@
 - [ ] ORM config
 
 ## Refs
-[NestJS로 배우는 백엔드 프로그래밍](https://wikidocs.net/book/7059)
+[NestJS for Backend](https://wikidocs.net/book/7059)
