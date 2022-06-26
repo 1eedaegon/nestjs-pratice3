@@ -14,7 +14,6 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './user-info';
 import { UsersService } from './users.service';
-import { ValidationPipe } from './validation.pipe';
 
 const { log } = console;
 const { stringify } = JSON;
@@ -24,7 +23,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
   // curl -v -X POST http://localhost:3000/users -H "Content-type: application/json" -d '{"name":"daegon", "email":"hello@asd.com", "password":"123"}'
   @Post()
-  async createUser(@Body(ValidationPipe) dto: CreateUserDto): Promise<void> {
+  async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { email, name, password } = dto;
     await this.usersService.createUser(name, email, password);
   }

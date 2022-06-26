@@ -1,11 +1,19 @@
 import * as uuid from 'uuid';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
 import { UserInfo } from './user-info';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { ulid } from 'ulid';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly emailService: EmailService) {}
+  constructor(
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
+    private readonly emailService: EmailService,
+  ) {}
   async createUser(name: string, email: string, password: string) {
     await this.checkUserExists(email);
     const signupVerifyToken = uuid.v1();
@@ -38,16 +46,29 @@ export class UsersService {
     throw new Error('Method not implemented');
   }
 
-  private checkUserExists(email: string) {
-    return; // TODO: DB연동 후 구현
+  private async checkUserExists(emailAddress: string): Promise<boolean> {
+    const user = await this.usersRepository.findOne({ email: emailAddress });
+    return user !== undefined;
   }
-  private saveUser(
+  private async saveUser(
     name: string,
     email: string,
     password: string,
     signupVerifyToken: string,
   ) {
-    return; // TODO: DB 연동 후 구현
+    const isUserExist = await this.checkUserExists(email);
+    if (isUserExist) {
+      throw new UnprocessableEntityException(
+        '해당 이메일로 가입할 수 없습니다.',
+      );
+    }
+    const user = new UserEntity();
+    user.id = ulid();
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    user.signupVerifyToken = signupVerifyToken;
+    await this.usersRepository.save(user); // TODO: DB 연동 후 구현
   }
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(
