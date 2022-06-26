@@ -82,6 +82,25 @@ export class UsersService {
     }
   }
 
+  private async saveUserUsingTransaction(
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ) {
+    // Transaction method controls the transactions when received Entity manager.
+    await this.connection.transaction(async (manager) => {
+      const user = new UserEntity();
+      user.id = ulid();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signupVerifyToken = signupVerifyToken;
+
+      await manager.save(user);
+    });
+  }
+
   private async saveUser(
     name: string,
     email: string,
