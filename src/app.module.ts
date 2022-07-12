@@ -19,7 +19,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { Logger2Middleware } from './middleware/logger2.middleware';
 import { UsersController } from './users/users.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './guard/authorization.guard';
+import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './config/authConfig';
 
