@@ -18,6 +18,8 @@ import { UserEntity } from './users/entities/user.entity';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { Logger2Middleware } from './middleware/logger2.middleware';
 import { UsersController } from './users/users.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guard/authorization.guard';
 
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
@@ -49,7 +51,12 @@ const validationSchema = Joi.object({
     EmailModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
