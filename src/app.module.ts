@@ -20,6 +20,8 @@ import { Logger2Middleware } from './middleware/logger2.middleware';
 import { UsersController } from './users/users.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guard/authorization.guard';
+import { AuthModule } from './auth/auth.module';
+import authConfig from './config/authConfig';
 
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
@@ -32,7 +34,7 @@ const validationSchema = Joi.object({
   imports: [
     ConfigModule.forRoot({
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
-      load: [emailConfig],
+      load: [authConfig, emailConfig],
       isGlobal: true,
       validationSchema,
     }),
@@ -49,6 +51,7 @@ const validationSchema = Joi.object({
     }),
     UsersModule,
     EmailModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
