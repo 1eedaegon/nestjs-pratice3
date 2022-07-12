@@ -8,7 +8,7 @@
 - [x] Pipe
 - [x] TypeORM
 - [x] Middleware
-- [ ] Guard
+- [x] Guard
 - [ ] Reflections
 - [ ] Logging
 - [ ] Task scheduling
