@@ -22,6 +22,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './config/authConfig';
+import { HandlerRolesGuard } from './roles/roles.guard.handler';
 
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
@@ -59,6 +60,7 @@ const validationSchema = Joi.object({
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    { provide: APP_GUARD, useClass: HandlerRolesGuard },
   ],
 })
 export class AppModule implements NestModule {

@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
+import { HandlerRolesGuard } from 'src/roles/roles.guard.handler';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
@@ -23,6 +24,7 @@ import { UsersService } from './users.service';
 const { log } = console;
 const { stringify } = JSON;
 
+@UseGuards(HandlerRolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(
