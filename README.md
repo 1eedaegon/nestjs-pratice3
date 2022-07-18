@@ -10,7 +10,7 @@
 - [x] Middleware
 - [x] Guard
 - [x] Reflections
-- [ ] Logging
+- [x] Logging
 - [ ] Task scheduling
 - [ ] CQRS
 - [ ] Clean architecture
