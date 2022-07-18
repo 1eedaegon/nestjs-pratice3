@@ -24,7 +24,7 @@ import { UsersService } from './users.service';
 const { log } = console;
 const { stringify } = JSON;
 
-@UseGuards(HandlerRolesGuard)
+// @UseGuards(HandlerRolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(
