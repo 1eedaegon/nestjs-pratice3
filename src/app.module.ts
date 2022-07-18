@@ -2,6 +2,8 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as Joi from 'joi';
 
+import * as winston from 'winston';
+
 import {
   MiddlewareConsumer,
   Module,
@@ -25,7 +27,10 @@ import authConfig from './config/authConfig';
 import { HandlerRolesGuard } from './roles/roles.guard.handler';
 import { AppSerivce } from './app.service';
 import { LoggingModule } from './logging/logging.module';
-
+import {
+  WinstonModule,
+  utilities as nestModuleWinstonUtilies,
+} from 'nest-winston';
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
   EMAIL_AUTH_USER: Joi.string().required(),
@@ -35,6 +40,19 @@ const validationSchema = Joi.object({
 
 @Module({
   imports: [
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console({
+          level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            nestModuleWinstonUtilies.format.nestLike('MyApp', {
+              prettyPrint: true,
+            }),
+          ),
+        }),
+      ],
+    }),
     ConfigModule.forRoot({
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
       load: [authConfig, emailConfig],
