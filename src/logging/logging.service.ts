@@ -1,4 +1,4 @@
-import { Injectable, LogLevel } from '@nestjs/common';
+import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
 
 export interface LoggerService {
   log(message: any, ...optionalParams: any[]): any;
@@ -28,5 +28,15 @@ export class MyLogger implements LoggerService {
   }
   setLogLevel(levels: LogLevel[]) {
     throw new Error('Method not implemented.');
+  }
+}
+
+export class MyLogger2 extends ConsoleLogger {
+  error(message: any, stack?: string, context?: string): void {
+    super.error.apply(this, arguments);
+    this.doSomething();
+  }
+  private doSomething() {
+    console.log('If you wanna logging, write this line');
   }
 }
