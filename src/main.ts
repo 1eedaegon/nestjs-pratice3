@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { WinstonModule, WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { utilities as nestWinstonModuleUtilies } from 'nest-winston';
 import * as winston from 'winston';
+import { LoggingInterceptor } from './logging/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,6 +22,7 @@ async function bootstrap() {
       ],
     }),
   });
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   await app.listen(3000);

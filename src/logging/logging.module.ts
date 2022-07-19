@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { LoggingInterceptor } from './logging.interceptor';
 import { MyLogger2 } from './logging.service';
 
 @Module({
