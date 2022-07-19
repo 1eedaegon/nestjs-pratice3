@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
@@ -60,6 +61,11 @@ export class UsersController {
     return this.usersService.login(email, password);
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    if (+id < 1) throw new BadRequestException('ID는 1보다 커야합니다.');
+    return this.usersService.findOne(id);
+  }
   @UseGuards(AuthGuard)
   @Get('/:id')
   async getUserInfo(

@@ -20,7 +20,7 @@ import { UserEntity } from './users/entities/user.entity';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { Logger2Middleware } from './middleware/logger2.middleware';
 import { UsersController } from './users/users.controller';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './config/authConfig';
@@ -31,6 +31,8 @@ import {
   WinstonModule,
   utilities as nestModuleWinstonUtilies,
 } from 'nest-winston';
+import { ExceptionsModule } from './exceptions/exceptions.module';
+import { HttpExceptionFilter } from './exceptions/http-exception.filter';
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
   EMAIL_AUTH_USER: Joi.string().required(),
@@ -74,6 +76,7 @@ const validationSchema = Joi.object({
     EmailModule,
     AuthModule,
     LoggingModule,
+    ExceptionsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -82,6 +85,7 @@ const validationSchema = Joi.object({
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
     // { provide: APP_GUARD, useClass: HandlerRolesGuard },
   ],
 })

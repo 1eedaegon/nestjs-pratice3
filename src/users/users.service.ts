@@ -67,6 +67,9 @@ export class UsersService {
   async findAll(offset: number, limit: number): Promise<UserInfo[]> {
     throw new Error('Method not implemented');
   }
+  async findOne(id: string): Promise<UserEntity> {
+    return this.usersRepository.findOne({ id });
+  }
 
   private async checkUserExists(emailAddress: string): Promise<boolean> {
     const user = await this.usersRepository.findOne({ email: emailAddress });
