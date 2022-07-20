@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface Response<T> {
   data: T;
@@ -12,6 +12,10 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<Response<T>> | Promise<Observable<Response<T>>> {
-    throw new Error('Method not implemented.');
+    return next.handle().pipe(
+      map((data) => {
+        return { data };
+      }),
+    );
   }
 }
