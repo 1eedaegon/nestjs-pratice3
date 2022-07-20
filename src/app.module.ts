@@ -36,6 +36,7 @@ import { ExceptionsModule } from './exceptions/exceptions.module';
 import { HttpExceptionFilter } from './exceptions/http-exception.filter';
 import { TransformModule } from './transform/transform.module';
 import { ErrorsModule } from './errors/errors.module';
+import { BatchModule } from './batch/batch.module';
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
   EMAIL_AUTH_USER: Joi.string().required(),
@@ -82,6 +83,7 @@ const validationSchema = Joi.object({
     ExceptionsModule,
     TransformModule,
     ErrorsModule,
+    BatchModule,
   ],
   controllers: [AppController],
   providers: [
