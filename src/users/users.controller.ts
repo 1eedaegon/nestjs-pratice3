@@ -85,11 +85,11 @@ export class UsersController {
   }
 
   private printLoggerServiceLog(dto) {
-    try {
-      throw new InternalServerErrorException('test');
-    } catch (e) {
-      this.logger.error('error: ' + JSON.stringify(dto), e.stack);
-    }
+    // try {
+    //   throw new InternalServerErrorException('test');
+    // } catch (e) {
+    //   this.logger.error('error: ' + JSON.stringify(dto), e.stack);
+    // }
     this.logger.warn('warn: ' + JSON.stringify(dto));
     this.logger.verbose('verbose: ' + JSON.stringify(dto));
     this.logger.debug('debug: ' + JSON.stringify(dto));

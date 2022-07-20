@@ -5,6 +5,7 @@ import * as Joi from 'joi';
 import * as winston from 'winston';
 
 import {
+  Logger,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -34,6 +35,7 @@ import {
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { HttpExceptionFilter } from './exceptions/http-exception.filter';
 import { TransformModule } from './transform/transform.module';
+import { ErrorsModule } from './errors/errors.module';
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
   EMAIL_AUTH_USER: Joi.string().required(),
@@ -79,6 +81,7 @@ const validationSchema = Joi.object({
     LoggingModule,
     ExceptionsModule,
     TransformModule,
+    ErrorsModule,
   ],
   controllers: [AppController],
   providers: [
