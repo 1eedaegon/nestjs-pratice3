@@ -5,7 +5,7 @@ import { Cron } from '@nestjs/schedule';
 export class TaskService {
   constructor(private readonly logger: Logger) {}
 
-  @Cron('* * * * * *', { name: 'cron task' })
+  @Cron(new Date(Date.now() + 3000))
   handleCron() {
     this.logger.log('Task calling...');
   }
