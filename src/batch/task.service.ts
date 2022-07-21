@@ -1,12 +1,27 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import {
+  Cron,
+  CronExpression,
+  Interval,
+  SchedulerRegistry,
+  Timeout,
+} from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly logger: Logger) {}
-
-  @Cron(CronExpression.MONDAY_TO_FRIDAY_AT_11AM)
-  handleCron() {
-    this.logger.log('Task calling...');
+  constructor(
+    private readonly logger: Logger,
+    private schedulerRegistry: SchedulerRegistry,
+  ) {
+    this.addCronJob();
+  }
+  addCronJob() {
+    const name = 'Cron job sample';
+    const job = new CronJob('* * * * * *', () => {
+      this.logger.warn(`Running job: ${name}`);
+    });
+    this.schedulerRegistry.addCronJob(name, job);
+    this.logger.log(`Cronjob added: ${name}`);
   }
 }
