@@ -11,7 +11,8 @@
 - [x] Guard
 - [x] Reflections
 - [x] Logging
-- [ ] Task scheduling
+- [x] Task scheduling
+- [ ] Health check
 - [ ] CQRS
 - [ ] Clean architecture
 - [ ] Supertest
