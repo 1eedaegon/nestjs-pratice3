@@ -12,8 +12,8 @@
 - [x] Reflections
 - [x] Logging
 - [x] Task scheduling
-- [ ] Health check
-- [ ] CQRS
+- [x] Health check
+- [x] CQRS
 - [ ] Clean architecture
 - [ ] Supertest
 - [ ] ORM config
