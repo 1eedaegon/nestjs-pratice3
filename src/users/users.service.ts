@@ -21,12 +21,7 @@ export class UsersService {
     private connection: Connection,
     private readonly authService: AuthService,
   ) {}
-  async createUser(name: string, email: string, password: string) {
-    await this.checkUserExists(email);
-    const signupVerifyToken = uuid.v1();
-    await this.saveUser(name, email, password, signupVerifyToken);
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
-  }
+  async createUser(name: string, email: string, password: string) {}
 
   async verifyEmail(signupVerifyToken: string): Promise<string> {
     // TODO
@@ -69,11 +64,6 @@ export class UsersService {
   }
   async findOne(id: string): Promise<UserEntity> {
     return this.usersRepository.findOne({ id });
-  }
-
-  private async checkUserExists(emailAddress: string): Promise<boolean> {
-    const user = await this.usersRepository.findOne({ email: emailAddress });
-    return user !== undefined;
   }
 
   private async saveUserUsingQueryRunner(
@@ -123,32 +113,5 @@ export class UsersService {
 
       await manager.save(user);
     });
-  }
-
-  private async saveUser(
-    name: string,
-    email: string,
-    password: string,
-    signupVerifyToken: string,
-  ) {
-    const isUserExist = await this.checkUserExists(email);
-    if (isUserExist) {
-      throw new UnprocessableEntityException(
-        '해당 이메일로 가입할 수 없습니다.',
-      );
-    }
-    const user = new UserEntity();
-    user.id = ulid();
-    user.name = name;
-    user.email = email;
-    user.password = password;
-    user.signupVerifyToken = signupVerifyToken;
-    await this.usersRepository.save(user); // TODO: DB 연동 후 구현
-  }
-  private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    await this.emailService.sendMemberJoinVerification(
-      email,
-      signupVerifyToken,
-    );
   }
 }

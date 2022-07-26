@@ -29,6 +29,9 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './user-info';
 import { UsersService } from './users.service';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateUserCommand } from './create-user.command';
+import { GetUserInfoQuery } from './get-user-info.query';
 
 // @UseGuards(HandlerRolesGuard)
 @Controller('users')
@@ -38,13 +41,17 @@ export class UsersController {
     private readonly logger: LoggerService,
     private authService: AuthService,
     private usersService: UsersService,
+    private commandBus: CommandBus,
+    private queryBus: QueryBus,
   ) {}
   // curl -v -X POST http://localhost:3000/users -H "Content-type: application/json" -d '{"name":"daegon", "email":"hello@asd.com", "password":"123"}'
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { email, name, password } = dto;
-
-    await this.usersService.createUser(name, email, password);
+    const command = new CreateUserCommand(name, email, password);
+    return this.commandBus.execute(command);
+    // const { email, name, password } = dto;
+    // await this.usersService.createUser(name, email, password);
   }
   // curl -v -X POST http://localhost:3000/users/email-verify\?signupVerifyToken\=test-token
   @Post('/email-verify')
@@ -67,13 +74,13 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
   @UseGuards(AuthGuard)
-  @Get('/:id')
+  @Get(':id')
   async getUserInfo(
-    @Headers() headers: any,
     @Param('id')
     userId: string,
   ): Promise<UserInfo> {
-    return this.usersService.getUserInfo(userId);
+    const getUserInfoQuery = new GetUserInfoQuery(userId);
+    return this.queryBus.execute(getUserInfoQuery);
   }
   @Get()
   async findAll(
