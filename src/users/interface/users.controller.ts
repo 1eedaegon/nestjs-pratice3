@@ -28,10 +28,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './user-info';
-import { UsersService } from './users.service';
+import { UsersService } from '../users.service';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from './create-user.command';
-import { GetUserInfoQuery } from './get-user-info.query';
+import { CreateUserCommand } from '../application/command/create-user.command';
+import { GetUserInfoQuery } from '../application/query/get-user-info.query';
 
 // @UseGuards(HandlerRolesGuard)
 @Controller('users')

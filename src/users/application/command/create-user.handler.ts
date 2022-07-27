@@ -4,7 +4,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user.command';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../../infra/db/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ulid } from 'ulid';
 import { EmailService } from 'src/email/email.service';

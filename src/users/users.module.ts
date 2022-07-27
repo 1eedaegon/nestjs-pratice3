@@ -3,11 +3,12 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { EmailModule } from 'src/email/email.module';
-import { CreateUserHandler } from './create-user.handler';
-import { UserEntity } from './entities/user.entity';
-import { UserEventsHandler } from './user-events.handler';
-import { UsersController } from './users.controller';
+import { CreateUserHandler } from './application/command/create-user.handler';
+import { UserEntity } from './infra/db/entities/user.entity';
+import { UserEventsHandler } from './application/events/user-events.handler';
+import { UsersController } from './interface/users.controller';
 import { UsersService } from './users.service';
+import { UserFactory } from './domain/user.factory';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { UsersService } from './users.service';
     TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [UsersController],
-  providers: [UserEventsHandler, CreateUserHandler, UsersService, Logger],
+  providers: [UserFactory, UserEventsHandler, UsersService, Logger],
 })
 export class UsersModule {}
