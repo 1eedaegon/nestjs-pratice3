@@ -14,7 +14,7 @@
 - [x] Task scheduling
 - [x] Health check
 - [x] CQRS
-- [ ] Clean architecture
+- [x] Clean architecture
 - [ ] Supertest
 - [ ] ORM config
 
