@@ -15,8 +15,8 @@
 - [x] Health check
 - [x] CQRS
 - [x] Clean architecture
-- [ ] Supertest
-- [ ] ORM config
+- [x] Supertest => jest
+- [x] ORM config
 
 ## Refs
 [NestJS for Backend](https://wikidocs.net/book/7059)
