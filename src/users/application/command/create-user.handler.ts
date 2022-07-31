@@ -11,9 +11,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../infra/db/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ulid } from 'ulid';
-import { EmailService } from 'src/email/email.service';
-import { UserFactory } from 'src/users/domain/user.factory';
-import { UserRepository } from 'src/users/infra/db/user.repository';
+import { EmailService } from '../../../email/email.service';
+import { UserFactory } from '../../domain/user.factory';
+import { UserRepository } from '../../infra/db/user.repository';
 
 @Injectable()
 @CommandHandler(CreateUserHandler)
