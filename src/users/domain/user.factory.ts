@@ -20,4 +20,13 @@ export class UserFactory {
     this.eventBus.publish(new UserCreatedEvent(email, signupVerifyToken));
     return user;
   }
+  reconstitute(
+    id: string,
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ): User {
+    return new User(id, name, email, password, signupVerifyToken);
+  }
 }

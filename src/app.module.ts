@@ -41,6 +41,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from './health-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { DogHealthIndicator } from './health-check/dog.health';
+import { UserRepository } from './users/infra/db/user.repository';
 const validationSchema = Joi.object({
   EMAIL_SERVICE: Joi.string().required(),
   EMAIL_AUTH_USER: Joi.string().required(),
@@ -101,6 +102,7 @@ const validationSchema = Joi.object({
       useClass: AuthGuard,
     },
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
+
     // { provide: APP_GUARD, useClass: HandlerRolesGuard },
   ],
 })

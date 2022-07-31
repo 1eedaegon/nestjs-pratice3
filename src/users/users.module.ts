@@ -9,6 +9,8 @@ import { UserEventsHandler } from './application/events/user-events.handler';
 import { UsersController } from './interface/users.controller';
 import { UsersService } from './users.service';
 import { UserFactory } from './domain/user.factory';
+import { UserRepository } from './infra/db/user.repository';
+import { EmailService } from './infra/adapter/email.service';
 
 @Module({
   imports: [
@@ -18,6 +20,13 @@ import { UserFactory } from './domain/user.factory';
     TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [UsersController],
-  providers: [UserFactory, UserEventsHandler, UsersService, Logger],
+  providers: [
+    UserFactory,
+    UserEventsHandler,
+    UsersService,
+    Logger,
+    { provide: 'UserRepository', useClass: UserRepository },
+    { provide: 'EmailService', useClass: EmailService },
+  ],
 })
 export class UsersModule {}
